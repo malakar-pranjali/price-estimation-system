@@ -1,91 +1,54 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+
+  const navigate = useNavigate();
+
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(to right, #ff9a9e, #fad0c4)",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: "40px",
-          borderRadius: "10px",
-          boxShadow: "0px 0px 20px rgba(0,0,0,0.2)",
-          textAlign: "center",
-        }}
-      >
-        <h2 style={{ marginBottom: "20px" }}>Register</h2>
+    <div className="min-h-screen flex justify-center items-center bg-[#020617] text-white">
+
+      <div className="bg-white/5 backdrop-blur-lg border border-gray-800 p-10 rounded-2xl shadow-xl w-[350px]">
+
+        <h2 className="text-3xl font-semibold mb-6 text-center">
+          Register
+        </h2>
 
         <input
           type="text"
           placeholder="Username"
-          style={{
-            padding: "10px",
-            margin: "10px",
-            width: "250px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className="w-full p-3 mb-4 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-purple-400"
         />
-
-        <br />
 
         <input
           type="email"
           placeholder="Email"
-          style={{
-            padding: "10px",
-            margin: "10px",
-            width: "250px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className="w-full p-3 mb-4 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-purple-400"
         />
-
-        <br />
 
         <input
           type="password"
           placeholder="Password"
-          style={{
-            padding: "10px",
-            margin: "10px",
-            width: "250px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className="w-full p-3 mb-6 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-purple-400"
         />
 
-        <br />
-
         <button
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#ff758c",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            marginTop: "10px",
-          }}
+          onClick={() => navigate("/")}
+          className="w-full bg-purple-500 text-white py-3 rounded-lg font-semibold hover:bg-purple-400 hover:scale-105 transition"
         >
-          Register
+          Create Account
         </button>
-        <p style={{ marginTop: "15px" }}>
-  Already have an account?{" "}
-  <span
-    style={{ color: "blue", cursor: "pointer" }}
-    onClick={() => (window.location.href = "/")}
-  >
-    Login
-  </span>
-</p>
+
+        <p className="mt-5 text-gray-400 text-center">
+          Already have an account?{" "}
+          <span
+            className="text-purple-400 cursor-pointer hover:underline"
+            onClick={() => navigate("/")}
+          >
+            Login
+          </span>
+        </p>
+
       </div>
     </div>
   );

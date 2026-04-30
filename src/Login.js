@@ -1,79 +1,48 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+
+  const navigate = useNavigate();
+
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(to right, #4facfe, #00f2fe)",
-      }}
-    >
-      <div
-        style={{
-          background: "white",
-          padding: "40px",
-          borderRadius: "10px",
-          boxShadow: "0px 0px 20px rgba(0,0,0,0.2)",
-          textAlign: "center",
-        }}
-      >
-        <h2 style={{ marginBottom: "20px" }}>Login</h2>
+    <div className="min-h-screen flex justify-center items-center bg-[#020617] text-white">
+
+      <div className="bg-white/5 backdrop-blur-lg border border-gray-800 p-10 rounded-2xl shadow-xl w-[350px]">
+
+        <h2 className="text-3xl font-semibold mb-6 text-center">
+          Login
+        </h2>
 
         <input
           type="text"
           placeholder="Username"
-          style={{
-            padding: "10px",
-            margin: "10px",
-            width: "250px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className="w-full p-3 mb-4 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
         />
-
-        <br />
 
         <input
           type="password"
           placeholder="Password"
-          style={{
-            padding: "10px",
-            margin: "10px",
-            width: "250px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className="w-full p-3 mb-6 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
         />
 
-        <br />
-
         <button
-  style={{
-    padding: "10px 20px",
-    backgroundColor: "#4facfe",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    marginTop: "10px",
-  }}
-  onClick={() => (window.location.href = "/home")}
->
-  Login
-</button>
-        {/* Register Text */}
-        <p style={{ marginTop: "15px" }}>
+          onClick={() => navigate("/home")}
+          className="w-full bg-cyan-500 text-black py-3 rounded-lg font-semibold hover:bg-cyan-400 hover:scale-105 transition"
+        >
+          Login
+        </button>
+
+        <p className="mt-5 text-gray-400 text-center">
           Don't have an account?{" "}
           <span
-  style={{ color: "blue", cursor: "pointer" }}
-  onClick={() => (window.location.href = "/register")}
->
-  Register
-</span>
+            className="text-cyan-400 cursor-pointer hover:underline"
+            onClick={() => navigate("/register")}
+          >
+            Register
+          </span>
         </p>
+
       </div>
     </div>
   );

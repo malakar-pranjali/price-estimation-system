@@ -1,5 +1,5 @@
-import Navbar from "./Navbar";
 import React, { useState } from "react";
+import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 
 function Form() {
@@ -7,120 +7,65 @@ function Form() {
   const navigate = useNavigate();
 
   const [product, setProduct] = useState("");
+  const [price, setPrice] = useState("");
   const [material, setMaterial] = useState("");
   const [labor, setLabor] = useState("");
-  const [category, setCategory] = useState("");
 
   const handleSubmit = () => {
-
-    // 🔥 Validation
-    if (!product || !material || !labor || !category) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    let base = Number(material) + Number(labor);
-    let finalPrice = base;
-
-    if (category.toLowerCase() === "luxury") {
-      finalPrice = base + base * 0.3;
-    }
-
-    navigate(
-      `/result?price=${finalPrice}&material=${material}&labor=${labor}`
-    );
+    navigate(`/result?product=${product}&price=${price}&material=${material}&labor=${labor}`);
   };
 
   return (
-    <div style={{ backgroundColor: "#f4f6f9", minHeight: "100vh" }}>
+    <div className="min-h-screen bg-[#020617] text-white">
+
       <Navbar />
 
-      <div
-        style={{
-          minHeight: "calc(100vh - 60px)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            background: "white",
-            padding: "35px",
-            borderRadius: "12px",
-            boxShadow: "0px 10px 30px rgba(0,0,0,0.15)",
-            width: "360px",
-            textAlign: "center",
-          }}
-        >
-          <h2 style={{ marginBottom: "25px", color: "#333" }}>
-            Price Estimation
+      <div className="flex justify-center items-center min-h-screen">
+
+        <div className="bg-white/5 backdrop-blur-lg border border-gray-800 p-8 rounded-2xl w-[400px] shadow-xl">
+
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            Enter Product Details
           </h2>
 
-          {/* 🔥 PRODUCT DROPDOWN */}
-          <select
-            value={product}
-            onChange={(e) => setProduct(e.target.value)}
-            style={inputStyle}
-          >
-            <option value="">Select Product</option>
-            <option value="mobile">Mobile</option>
-            <option value="laptop">Laptop</option>
-            <option value="furniture">Furniture</option>
-            <option value="clothes">Clothes</option>
-            <option value="electronics">Electronics</option>
-          </select>
+          <input
+            placeholder="Product Name"
+            className="w-full mb-4 p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
+            onChange={(e)=>setProduct(e.target.value)}
+          />
 
           <input
+            placeholder="Price"
             type="number"
+            className="w-full mb-4 p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
+            onChange={(e)=>setPrice(e.target.value)}
+          />
+
+          <input
             placeholder="Material Cost"
-            value={material}
-            onChange={(e) => setMaterial(e.target.value)}
-            style={inputStyle}
-          />
-
-          <input
             type="number"
-            placeholder="Labor Cost"
-            value={labor}
-            onChange={(e) => setLabor(e.target.value)}
-            style={inputStyle}
+            className="w-full mb-4 p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
+            onChange={(e)=>setMaterial(e.target.value)}
           />
 
           <input
-            type="text"
-            placeholder="Category (normal / luxury)"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            style={inputStyle}
+            placeholder="Labor Cost"
+            type="number"
+            className="w-full mb-6 p-3 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:border-cyan-400"
+            onChange={(e)=>setLabor(e.target.value)}
           />
 
-          <button onClick={handleSubmit} style={buttonStyle}>
-            Submit
+          <button
+            onClick={handleSubmit}
+            className="w-full bg-cyan-500 text-black py-3 rounded-lg font-semibold hover:bg-cyan-400 hover:scale-105 transition-all duration-300"
+          >
+            Calculate
           </button>
+
         </div>
       </div>
     </div>
   );
 }
-
-const inputStyle = {
-  padding: "12px",
-  margin: "10px 0",
-  width: "100%",
-  borderRadius: "6px",
-  border: "1px solid #ddd",
-};
-
-const buttonStyle = {
-  padding: "12px",
-  width: "100%",
-  backgroundColor: "#6c5ce7",
-  color: "white",
-  border: "none",
-  borderRadius: "6px",
-  cursor: "pointer",
-  marginTop: "15px",
-};
 
 export default Form;
