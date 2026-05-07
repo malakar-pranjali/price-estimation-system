@@ -6,15 +6,16 @@ function History() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("history")) || [];
-    setHistory(data);
-  }, []);
 
-  // 🔥 CLEAR HISTORY
-  const clearHistory = () => {
-    localStorage.removeItem("history");
-    setHistory([]);
-  };
+    fetch("http://localhost:5000/history")
+
+      .then((res) => res.json())
+
+      .then((data) => {
+        setHistory(data.reverse());
+      });
+
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#020617] text-white">
@@ -23,66 +24,83 @@ function History() {
 
       <div className="p-6 max-w-5xl mx-auto">
 
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-semibold">
-            History
-          </h2>
+        <h1 className="text-3xl font-bold mb-8">
+          Estimation History
+        </h1>
 
-          {history.length > 0 && (
-            <button
-              onClick={clearHistory}
-              className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-400 transition"
-            >
-              Clear All
-            </button>
-          )}
-        </div>
+        {
+          history.length === 0 ? (
 
-        {/* EMPTY */}
-        {history.length === 0 ? (
-          <div className="text-center mt-20 text-gray-400">
-            No records found
-          </div>
-        ) : (
+            <div className="text-gray-400">
+              No records found
+            </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          ) : (
 
-            {history.map((item, index) => (
+            <div className="grid gap-5">
 
-              <div
-                key={index}
-                className="bg-white/5 border border-gray-800 p-5 rounded-2xl hover:scale-105 hover:shadow-xl transition-all duration-300"
-              >
+              {
+                history.map((item, index) => (
 
-                <h3 className="text-lg font-semibold mb-2">
-                  {item.product}
-                </h3>
+                  <div
+                    key={index}
+                    className="bg-white/5 border border-gray-800 p-6 rounded-2xl backdrop-blur-lg"
+                  >
 
-                <p className="text-gray-300">
-                  Price: ₹{item.price}
-                </p>
+                    <div className="flex justify-between items-center">
 
-                <p
-                  className={`mt-2 font-semibold ${
-                    item.status === "Cheap"
-                      ? "text-green-400"
-                      : item.status === "Fair Price"
-                      ? "text-yellow-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  {item.status}
-                </p>
+                      <div>
 
-              </div>
+                        <h2 className="text-2xl font-semibold text-cyan-400">
+                          {item.product}
+                        </h2>
 
-            ))}
+                        <p className="text-gray-400 mt-2">
+                          Selling Price:
+                          <span className="text-white">
+                            {" "}₹{item.price}
+                          </span>
+                        </p>
 
-          </div>
-        )}
+                        <p className="text-gray-400">
+                          Estimated Market Price:
+                          <span className="text-green-400">
+                            {" "}₹{item.estimatedMarketPrice}
+                          </span>
+                        </p>
+
+                      </div>
+
+                      <div>
+
+                        <span
+                          className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                            item.status === "Cheap"
+                              ? "bg-green-500/20 text-green-400"
+                              : item.status === "Fair Price"
+                              ? "bg-yellow-500/20 text-yellow-400"
+                              : "bg-red-500/20 text-red-400"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                ))
+              }
+
+            </div>
+
+          )
+        }
 
       </div>
+
     </div>
   );
 }

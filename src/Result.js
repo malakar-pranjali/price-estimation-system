@@ -1,146 +1,97 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navbar from "./Navbar";
-import { useNavigate } from "react-router-dom";
-import jsPDF from "jspdf";
 
 function Result() {
 
-  const navigate = useNavigate();
-
   const params = new URLSearchParams(window.location.search);
 
-  const price = Number(params.get("price"));
-  const material = Number(params.get("material"));
-  const labor = Number(params.get("labor"));
   const product = params.get("product");
+  const price = params.get("price");
+  const estimated = params.get("estimated");
+  const status = params.get("status");
 
-  const [showGraph, setShowGraph] = useState(false);
-
-  const estimatedMarketPrice = material + labor + (0.3 * (material + labor));
-  const difference = price - estimatedMarketPrice;
-
-  let status = "";
   let color = "";
-  let message = "";
 
-  if (difference < -500) {
-    status = "Underpriced";
+  if (status === "Cheap") {
     color = "text-green-400";
-    message = "Your price is lower than market value.";
-  } 
-  else if (difference <= 500) {
-    status = "Fair Price";
-    color = "text-yellow-400";
-    message = "Your price matches market value.";
-  } 
-  else {
-    status = "Overpriced";
-    color = "text-red-400";
-    message = "Your price is higher than market.";
   }
-
-  // SAVE HISTORY
-  useEffect(() => {
-    const old = JSON.parse(localStorage.getItem("history")) || [];
-    const newEntry = { product, price, market: estimatedMarketPrice, status };
-    localStorage.setItem("history", JSON.stringify([newEntry, ...old]));
-  }, []);
-
-  // 🔥 PDF FUNCTION
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-
-    doc.setFontSize(18);
-    doc.text("Price Estimation Report", 20, 20);
-
-    doc.setFontSize(12);
-    doc.text(`Product: ${product}`, 20, 40);
-    doc.text(`Your Price: ₹${price}`, 20, 50);
-    doc.text(`Market Price: ₹${estimatedMarketPrice.toFixed(0)}`, 20, 60);
-    doc.text(`Status: ${status}`, 20, 70);
-    doc.text(`Analysis: ${message}`, 20, 80);
-
-    doc.save(`${product}_report.pdf`);
-  };
+  else if (status === "Fair Price") {
+    color = "text-yellow-400";
+  }
+  else {
+    color = "text-red-400";
+  }
 
   return (
     <div className="min-h-screen bg-[#020617] text-white">
-      
+
       <Navbar />
 
       <div className="flex justify-center items-center min-h-screen px-6">
 
-        <div className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-xl w-full max-w-5xl">
+        <div className="bg-white/5 border border-gray-800 p-10 rounded-3xl w-full max-w-4xl backdrop-blur-lg">
+
+          <h1 className="text-4xl font-bold mb-8 text-center">
+            Estimation Result
+          </h1>
 
           <div className="grid md:grid-cols-2 gap-8">
 
             {/* LEFT */}
-            <div>
-              <h2 className="text-2xl font-semibold mb-2">{product}</h2>
+            <div className="bg-white/5 p-6 rounded-2xl border border-gray-800">
 
-              <h1 className="text-4xl font-bold mb-2">₹{price}</h1>
+              <h2 className="text-2xl font-semibold text-cyan-400 mb-6">
+                Product Details
+              </h2>
 
-              <p className="text-gray-400 mb-2">
-                Market Estimate: ₹{estimatedMarketPrice.toFixed(0)}
-              </p>
+              <div className="space-y-4">
 
-              <h3 className={`${color} font-semibold text-lg`}>
-                {status}
-              </h3>
+                <p className="text-gray-400">
+                  Product Name:
+                  <span className="text-white">
+                    {" "} {product}
+                  </span>
+                </p>
 
-              <p className="text-gray-400 mt-2">{message}</p>
+                <p className="text-gray-400">
+                  Selling Price:
+                  <span className="text-white">
+                    {" "} ₹{price}
+                  </span>
+                </p>
 
-              <button
-                onClick={() => setShowGraph(!showGraph)}
-                className="mt-6 bg-cyan-500 px-5 py-2 rounded-lg text-black hover:scale-105 transition"
-              >
-                {showGraph ? "Hide Analysis" : "Show Analysis"}
-              </button>
+                <p className="text-gray-400">
+                  Estimated Market Price:
+                  <span className="text-green-400">
+                    {" "} ₹{estimated}
+                  </span>
+                </p>
 
-              <button
-                onClick={downloadPDF}
-                className="ml-3 mt-6 bg-green-500 px-5 py-2 rounded-lg text-black hover:scale-105 transition"
-              >
-                Download Report
-              </button>
+              </div>
 
-              <button
-                onClick={() => navigate("/home")}
-                className="ml-3 mt-6 bg-purple-600 px-5 py-2 rounded-lg hover:scale-105 transition"
-              >
-                Back
-              </button>
             </div>
 
             {/* RIGHT */}
-            <div>
+            <div className="bg-white/5 p-6 rounded-2xl border border-gray-800 flex flex-col justify-center">
 
-              {showGraph && (
-                <div className="mt-4 bg-black/30 p-4 rounded-lg">
+              <h2 className="text-2xl font-semibold mb-4">
+                Price Analysis
+              </h2>
 
-                  <p className="mb-4">Price Comparison</p>
+              <h1 className={`text-5xl font-bold ${color}`}>
+                {status}
+              </h1>
 
-                  <div className="mb-3">
-                    <p className="text-sm">Your Price</p>
-                    <div className="w-full bg-gray-700 h-3 rounded">
-                      <div className="bg-cyan-400 h-3 rounded w-full"></div>
-                    </div>
-                  </div>
+              <p className="text-gray-400 mt-4">
+                The product pricing has been analyzed based on estimated production and market calculations.
+              </p>
 
-                  <div>
-                    <p className="text-sm">Market Price</p>
-                    <div className="w-full bg-gray-700 h-3 rounded">
-                      <div
-                        className="bg-yellow-400 h-3 rounded"
-                        style={{
-                          width: `${(estimatedMarketPrice / price) * 100}%`
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-
-                </div>
-              )}
+              <button
+                onClick={() => window.location.href="/history"}
+                className="mt-8 bg-cyan-500 text-black py-3 rounded-xl hover:bg-cyan-400 transition"
+              >
+                View History
+              </button>
 
             </div>
 
@@ -149,6 +100,7 @@ function Result() {
         </div>
 
       </div>
+
     </div>
   );
 }

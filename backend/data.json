@@ -1,0 +1,14 @@
+[
+  {
+    "product": "Shirt",
+    "price": 1200,
+    "estimatedMarketPrice": 960,
+    "status": "Expensive"
+  },
+  {
+    "product": "shorts",
+    "price": 500,
+    "estimatedMarketPrice": 640,
+    "status": "Cheap"
+  }
+]
